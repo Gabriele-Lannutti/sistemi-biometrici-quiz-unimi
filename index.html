@@ -387,12 +387,12 @@ const LETTERS = ["A", "B", "C", "D", "E"];
 function BiometriaQuiz() {
   const [mode, setMode] = useState("menu");
   const [darkMode, setDarkMode] = useState(() => {
-    try { return localStorage.getItem("biometria_theme") !== "light"; } catch(e) { return true; }
+    try { return localStorage.getItem("sisbio_theme") !== "light"; } catch(e) { return true; }
   });
   const toggleTheme = () => {
     const newMode = !darkMode;
     setDarkMode(newMode);
-    try { localStorage.setItem("biometria_theme", newMode ? "dark" : "light"); } catch(e) {}
+    try { localStorage.setItem("sisbio_theme", newMode ? "dark" : "light"); } catch(e) {}
   };
   // Theme colors
   const T = darkMode ? {
@@ -422,15 +422,15 @@ function BiometriaQuiz() {
   const [showResetFinal, setShowResetFinal] = useState(false);
   const [showCert, setShowCert] = useState(false);
   const [certName, setCertName] = useState(() => {
-    try { return localStorage.getItem("biometria_cert_name") || ""; } catch(e) { return ""; }
+    try { return localStorage.getItem("sisbio_cert_name") || ""; } catch(e) { return ""; }
   });
   const [certGenerated, setCertGenerated] = useState(false);
   const certRedeemed = certName.trim().length > 0;
   const [streak, setStreak] = useState(() => {
-    try { return parseInt(localStorage.getItem("biometria_streak_current")) || 0; } catch(e) { return 0; }
+    try { return parseInt(localStorage.getItem("sisbio_streak_current")) || 0; } catch(e) { return 0; }
   });
   const [bestStreak, setBestStreak] = useState(() => {
-    try { return parseInt(localStorage.getItem("biometria_streak_best")) || 0; } catch(e) { return 0; }
+    try { return parseInt(localStorage.getItem("sisbio_streak_best")) || 0; } catch(e) { return 0; }
   });
   const [streakToast, setStreakToast] = useState(null);
   const streakToastTimer = useRef(null);
@@ -461,8 +461,8 @@ function BiometriaQuiz() {
   };
   const saveStreak = (current, best) => {
     try {
-      localStorage.setItem("biometria_streak_current", current.toString());
-      localStorage.setItem("biometria_streak_best", best.toString());
+      localStorage.setItem("sisbio_streak_current", current.toString());
+      localStorage.setItem("sisbio_streak_best", best.toString());
     } catch(e) {}
   };
   const triggerStreakToast = (newStreak) => {
@@ -482,19 +482,19 @@ function BiometriaQuiz() {
   };
   const resetStreak = () => {
     setStreak(0);
-    try { localStorage.setItem("biometria_streak_current", "0"); } catch(e) {}
+    try { localStorage.setItem("sisbio_streak_current", "0"); } catch(e) {}
   };
 
 
   // localStorage helpers for ripasso
   const getRipassoSet = () => {
     try {
-      const raw = localStorage.getItem("biometria_ripasso");
+      const raw = localStorage.getItem("sisbio_ripasso");
       return raw ? new Set(JSON.parse(raw)) : new Set();
     } catch(e) { return new Set(); }
   };
   const saveRipassoSet = (s) => {
-    try { localStorage.setItem("biometria_ripasso", JSON.stringify([...s])); } catch(e) {}
+    try { localStorage.setItem("sisbio_ripasso", JSON.stringify([...s])); } catch(e) {}
   };
   const addToRipasso = (questionText) => {
     const s = getRipassoSet();
@@ -510,12 +510,12 @@ function BiometriaQuiz() {
   // localStorage helpers for mastered (progress counter)
   const getMasteredSet = () => {
     try {
-      const raw = localStorage.getItem("biometria_mastered");
+      const raw = localStorage.getItem("sisbio_mastered");
       return raw ? new Set(JSON.parse(raw)) : new Set();
     } catch(e) { return new Set(); }
   };
   const saveMasteredSet = (s) => {
-    try { localStorage.setItem("biometria_mastered", JSON.stringify([...s])); } catch(e) {}
+    try { localStorage.setItem("sisbio_mastered", JSON.stringify([...s])); } catch(e) {}
   };
   const addToMastered = (questionText) => {
     const s = getMasteredSet();
@@ -526,11 +526,11 @@ function BiometriaQuiz() {
   // Reset all progress
   const resetAllProgress = () => {
     try {
-      localStorage.removeItem("biometria_ripasso");
-      localStorage.removeItem("biometria_mastered");
-      localStorage.removeItem("biometria_cert_name");
-      localStorage.removeItem("biometria_streak_current");
-      localStorage.removeItem("biometria_streak_best");
+      localStorage.removeItem("sisbio_ripasso");
+      localStorage.removeItem("sisbio_mastered");
+      localStorage.removeItem("sisbio_cert_name");
+      localStorage.removeItem("sisbio_streak_current");
+      localStorage.removeItem("sisbio_streak_best");
     } catch(e) {}
     setRipassoCount(0);
     setMasteredCount(0);
@@ -666,7 +666,7 @@ function BiometriaQuiz() {
     const handleBeforeUnload = () => {
       if (mode === "quiz" && !revealed) {
         // Punto sporco: azzera streak in localStorage direttamente
-        try { localStorage.setItem("biometria_streak_current", "0"); } catch(e) {}
+        try { localStorage.setItem("sisbio_streak_current", "0"); } catch(e) {}
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -713,8 +713,8 @@ function BiometriaQuiz() {
               )}
             </button>
           </div>
-          <h1 style={{fontSize:24,color:"#ff4444",marginBottom:4,letterSpacing:2}}>SUPER TEST DI TECNICHE E</h1>
-          <h1 style={{fontSize:24,color:"#ff4444",marginTop:0,letterSpacing:2}}>APPLICAZIONI BIOMETRICHE</h1>
+          <h1 style={{fontSize:24,color:"#ff4444",marginBottom:4,letterSpacing:2}}>SISTEMI</h1>
+          <h1 style={{fontSize:24,color:"#ff4444",marginTop:0,letterSpacing:2}}>BIOMETRICI</h1>
           <p style={{color:T.textMuted,fontSize:12,marginBottom:24}}>Creato da Gabriele Lannutti</p>
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {(() => {
@@ -851,7 +851,7 @@ function BiometriaQuiz() {
                       style={{width:"100%",padding:"10px 14px",background:T.inputBg,border:`1px solid ${T.borderLight}`,borderRadius:4,color:T.text,fontSize:14,fontFamily:"inherit",outline:"none",textAlign:"center",marginBottom:16}}
                     />
                     <div style={{display:"flex",gap:10,justifyContent:"center"}}>
-                      <button onClick={() => {if(certName.trim()){try{localStorage.setItem("biometria_cert_name",certName.trim())}catch(e){} setCertGenerated(true);}}}
+                      <button onClick={() => {if(certName.trim()){try{localStorage.setItem("sisbio_cert_name",certName.trim())}catch(e){} setCertGenerated(true);}}}
                         style={{padding:"10px 24px",background: certName.trim()?"#ffd700":"#333",color:certName.trim()?"#0a0a0f":"#666",border:"none",borderRadius:4,fontWeight:700,cursor:certName.trim()?"pointer":"default",fontFamily:"inherit",fontSize:13,transition:"all 0.2s"}}>
                         GENERA CERTIFICATO
                       </button>
@@ -880,7 +880,7 @@ function BiometriaQuiz() {
                       <p style={{fontSize:12,color:"#888",lineHeight:1.6,marginBottom:16}}>
                         ha completato con successo tutte le <span style={{color:"#ffd700",fontWeight:700}}>{QUESTIONS.length}</span> domande del
                       </p>
-                      <p style={{fontSize:14,color:"#ff4444",fontWeight:700,marginBottom:16}}>Super Test di Tecniche e Applicazioni Biometriche</p>
+                      <p style={{fontSize:14,color:"#ff4444",fontWeight:700,marginBottom:16}}>Sistemi Biometrici</p>
                       <div style={{width:40,height:1,background:"#ffd700",margin:"0 auto 20px",opacity:0.5}}/>
                       <p style={{fontSize:10,color:"#666",marginBottom:4}}>Firmato</p>
                       <p style={{fontSize:14,color:"#ccc",fontStyle:"italic"}}>Gabriele Lannutti</p>
@@ -908,19 +908,26 @@ function BiometriaQuiz() {
       {code:"MET1", name:"Metriche: FMR, FNMR, EER, Soglia"},
       {code:"MET2", name:"Metriche: CMC, DET, ROC, Valutazione"},
       {code:"ZOO", name:"Zoo di Doddington"},
-      {code:"CNN", name:"CNN e Deep Learning"},
-      {code:"MULTI", name:"Multimodale"},
-      {code:"VOLTO", name:"Volto"},
-      {code:"SENS", name:"Sensori e Ottiche"},
+      {code:"MULTI", name:"Sistemi Multimodali"},
+      {code:"IMPR", name:"Impronte Digitali"},
+      {code:"IRIDE", name:"Iride"},
+      {code:"VOLTO", name:"Volto 2D e 3D"},
+      {code:"TATTO", name:"Mano, Palmo e Vene"},
+      {code:"RETINA", name:"Retina"},
+      {code:"VOCE", name:"Voce e Speaker Recognition"},
+      {code:"FIRMA", name:"Firma Biometrica"},
+      {code:"DNA", name:"DNA"},
+      {code:"ORECCHIO", name:"Orecchio"},
+      {code:"KEY", name:"Keystroke Dynamics"},
+      {code:"ATK", name:"Attacchi e Anti-spoofing"},
+      {code:"DEEP", name:"Deepfake"},
       {code:"PRIV", name:"Privacy e Template Protection"},
       {code:"IDAUT", name:"Identificazione, Autenticazione e Normativa"},
-      {code:"IRIDE", name:"Iride"},
-      {code:"ATK", name:"Attacchi e Anti-spoofing"},
-      {code:"IMPR", name:"Impronte"},
-      {code:"VOCE", name:"Voce e Firma"},
+      {code:"STD", name:"Standard e Best Practices"},
+      {code:"SENS", name:"Sensori e Ottiche"},
+      {code:"CNN", name:"CNN e Deep Learning"},
       {code:"ITT", name:"ITT e CAPTCHA"},
       {code:"POP", name:"Proof of Personhood e WorldCoin"},
-      {code:"DEEP", name:"Deepfake"},
     ];
     const LETTERS = ["A","B","C","D","E"];
     const grouped = {};
