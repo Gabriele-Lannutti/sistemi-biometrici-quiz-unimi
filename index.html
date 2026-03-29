@@ -713,8 +713,8 @@ function BiometriaQuiz() {
               )}
             </button>
           </div>
-          <h1 style={{fontSize:24,color:"#ff4444",marginBottom:4,letterSpacing:2}}>SISTEMI</h1>
-          <h1 style={{fontSize:24,color:"#ff4444",marginTop:0,letterSpacing:2}}>BIOMETRICI</h1>
+          <h1 style={{fontSize:24,color:"#ff4444",marginBottom:4,letterSpacing:2}}>SUPER TEST DI</h1>
+          <h1 style={{fontSize:24,color:"#ff4444",marginTop:0,letterSpacing:2}}>SISTEMI BIOMETRICI</h1>
           <p style={{color:T.textMuted,fontSize:12,marginBottom:24}}>Creato da Gabriele Lannutti</p>
           <div style={{display:"flex",flexDirection:"column",gap:12}}>
             {(() => {
@@ -905,29 +905,23 @@ function BiometriaQuiz() {
   // STUDY MODE
   if (mode === "study") {
     const CAT_ORDER = [
-      {code:"MET1", name:"Metriche: FMR, FNMR, EER, Soglia"},
-      {code:"MET2", name:"Metriche: CMC, DET, ROC, Valutazione"},
-      {code:"ZOO", name:"Zoo di Doddington"},
-      {code:"MULTI", name:"Sistemi Multimodali"},
-      {code:"IMPR", name:"Impronte Digitali"},
-      {code:"IRIDE", name:"Iride"},
-      {code:"VOLTO", name:"Volto 2D e 3D"},
-      {code:"TATTO", name:"Mano, Palmo e Vene"},
-      {code:"RETINA", name:"Retina"},
-      {code:"VOCE", name:"Voce e Speaker Recognition"},
-      {code:"FIRMA", name:"Firma Biometrica"},
-      {code:"DNA", name:"DNA"},
-      {code:"ORECCHIO", name:"Orecchio"},
-      {code:"KEY", name:"Keystroke Dynamics"},
-      {code:"ATK", name:"Attacchi e Anti-spoofing"},
-      {code:"DEEP", name:"Deepfake"},
-      {code:"PRIV", name:"Privacy e Template Protection"},
-      {code:"IDAUT", name:"Identificazione, Autenticazione e Normativa"},
-      {code:"STD", name:"Standard e Best Practices"},
-      {code:"SENS", name:"Sensori e Ottiche"},
-      {code:"CNN", name:"CNN e Deep Learning"},
-      {code:"ITT", name:"ITT e CAPTCHA"},
-      {code:"POP", name:"Proof of Personhood e WorldCoin"},
+      {codes:["MET1"], name:"Metriche: FMR, FNMR, EER, Soglia"},
+      {codes:["MET2"], name:"Metriche: CMC, DET, ROC, Valutazione"},
+      {codes:["ZOO"], name:"Zoo di Doddington"},
+      {codes:["IMPR"], name:"Impronte Digitali"},
+      {codes:["IRIDE"], name:"Iride"},
+      {codes:["VOLTO"], name:"Volto 2D e 3D"},
+      {codes:["TATTO","RETINA"], name:"Mano, Palmo, Vene e Retina"},
+      {codes:["VOCE","FIRMA"], name:"Voce e Firma"},
+      {codes:["DNA","ORECCHIO"], name:"DNA e Orecchio"},
+      {codes:["ATK","DEEP","KEY"], name:"Attacchi, Deepfake e Keystroke"},
+      {codes:["PRIV","STD"], name:"Privacy, Normativa e Standard"},
+      {codes:["IDAUT"], name:"Identificazione, Autenticazione e AI Act"},
+      {codes:["MULTI"], name:"Sistemi Multimodali"},
+      {codes:["SENS"], name:"Sensori e Ottiche"},
+      {codes:["CNN"], name:"CNN e Deep Learning"},
+      {codes:["ITT"], name:"ITT e CAPTCHA"},
+      {codes:["POP"], name:"Proof of Personhood e WorldCoin"},
     ];
     const LETTERS = ["A","B","C","D","E"];
     const grouped = {};
@@ -944,10 +938,10 @@ function BiometriaQuiz() {
           </div>
           <p style={{color:T.textMuted,fontSize:11,marginBottom:20}}>{QUESTIONS.length} domande organizzate in {CAT_ORDER.length} categorie. Tocca una categoria per espanderla.</p>
           {CAT_ORDER.map(cat => {
-            const qs = grouped[cat.code] || [];
+            const qs = (cat.codes || [cat.code]).flatMap(c => grouped[c] || []);
             if (qs.length === 0) return null;
             return (
-              <details key={cat.code} style={{marginBottom:8}}>
+              <details key={(cat.codes||[cat.code]).join("_")} style={{marginBottom:8}}>
                 <summary style={{cursor:"pointer",padding:"10px 14px",background:T.cardBg,border:"1px solid "+T.border,borderRadius:4,fontSize:12,fontWeight:700,color:"#44aaff",listStyle:"none",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <span>{cat.name}</span>
                   <span style={{color:T.textMuted,fontWeight:400,fontSize:11}}>{qs.length} domande</span>
